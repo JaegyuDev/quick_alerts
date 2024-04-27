@@ -1,4 +1,4 @@
-package dev.jaegyu.QuickAlerts;
+package dev.jaegyu.QuickAlerts.location_markers;
 
 import com.google.gson.JsonObject;
 import net.minecraft.util.BlockPos;

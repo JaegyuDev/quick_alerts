@@ -2,10 +2,9 @@ package dev.jaegyu.QuickAlerts;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonWriter;
-import dev.jaegyu.QuickAlerts.commands.register;
-import dev.jaegyu.QuickAlerts.commands.registerAtMe;
+import dev.jaegyu.QuickAlerts.commands.locationMarkers;
 import dev.jaegyu.QuickAlerts.commands.togglePings;
-import dev.jaegyu.QuickAlerts.commands.unregister;
+import dev.jaegyu.QuickAlerts.location_markers.PingLocations;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -27,9 +26,7 @@ public class QuickAlerts {
         MinecraftForge.EVENT_BUS.register(notifPlayer);
         MinecraftForge.EVENT_BUS.register(this);
 
-        ClientCommandHandler.instance.registerCommand(new register(notifPlayer));
-        ClientCommandHandler.instance.registerCommand(new registerAtMe(notifPlayer));
-        ClientCommandHandler.instance.registerCommand(new unregister(notifPlayer));
+        ClientCommandHandler.instance.registerCommand(new locationMarkers(notifPlayer));
         ClientCommandHandler.instance.registerCommand(new togglePings(notifPlayer));
 
         loadState();
@@ -39,7 +36,7 @@ public class QuickAlerts {
     // anyone else wants to use this they should keep it in mind. PR's are welcome :)
     public static void saveState() {
         try {
-            File file = new File("jsm", "state.json");
+            File file = new File("QuickAlerts", "state.json");
             if (!file.exists()) {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
@@ -54,7 +51,7 @@ public class QuickAlerts {
     }
     private static void loadState(){
         try {
-            File file = new File("jsm", "state.json");
+            File file = new File("QuickAlerts", "state.json");
             if (file.exists())
                 readJson(file);
         } catch (Throwable e) {

@@ -1,6 +1,9 @@
 package dev.jaegyu.QuickAlerts;
 
 import java.util.Vector;
+
+import dev.jaegyu.QuickAlerts.location_markers.PingLocation;
+import dev.jaegyu.QuickAlerts.location_markers.PingLocations;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -35,11 +38,11 @@ public class NotifPlayer {
 
     // This returns the new state of PingsEnabled
     public boolean togglePings() {
-        PingsEnabled =!PingsEnabled;
+        PingsEnabled =! PingsEnabled;
         return PingsEnabled;
     }
 
-    @SubscribeEvent @SuppressWarnings("unused")
+    @SubscribeEvent
     public void tickEvent(TickEvent.PlayerTickEvent e) {
         if(!PingsEnabled)
             return;

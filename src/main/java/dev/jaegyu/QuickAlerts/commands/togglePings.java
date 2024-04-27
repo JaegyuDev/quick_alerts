@@ -17,12 +17,12 @@ public class togglePings extends CommandBase {
 
     @Override
     public String getCommandName() {
-        return "jsm-togglepings";
+        return "jqa-togglepings";
     }
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "/jsm-togglepings";
+        return "/jqa-togglepings";
     }
 
     @Override

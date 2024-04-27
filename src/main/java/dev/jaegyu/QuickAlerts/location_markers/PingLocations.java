@@ -1,6 +1,7 @@
-package dev.jaegyu.QuickAlerts;
+package dev.jaegyu.QuickAlerts.location_markers;
 
 import com.google.gson.JsonArray;
+import dev.jaegyu.QuickAlerts.location_markers.PingLocation;
 
 import java.util.Vector;
 
