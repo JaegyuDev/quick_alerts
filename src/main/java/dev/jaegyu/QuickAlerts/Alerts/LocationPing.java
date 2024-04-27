@@ -1,4 +1,4 @@
-package dev.jaegyu.QuickAlerts.LocationAlerts;
+package dev.jaegyu.QuickAlerts.Alerts;
 
 import com.google.gson.JsonObject;
 import dev.jaegyu.QuickAlerts.BasePing;

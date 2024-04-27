@@ -3,7 +3,7 @@ package dev.jaegyu.QuickAlerts.commands;
 import dev.jaegyu.QuickAlerts.NotifPlayer;
 import dev.jaegyu.QuickAlerts.PingVec;
 import dev.jaegyu.QuickAlerts.Utils;
-import dev.jaegyu.QuickAlerts.LocationAlerts.LocationPing;
+import dev.jaegyu.QuickAlerts.Alerts.LocationPing;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;
@@ -14,9 +14,9 @@ import net.minecraft.util.ChatComponentText;
 import java.util.ArrayList;
 import java.util.List;
 
-public class locationMarkers extends CommandBase {
+public class locationCommands extends CommandBase {
     public final NotifPlayer notifPlayer;
-    public locationMarkers(NotifPlayer notifPlayer) {
+    public locationCommands(NotifPlayer notifPlayer) {
         this.notifPlayer = notifPlayer;
     }
 
@@ -156,7 +156,7 @@ public class locationMarkers extends CommandBase {
         }
 
 
-        if (notifPlayer.registerPingLocation(name, pos.getX(), pos.getY(), pos.getZ(), radius)) {
+        if (notifPlayer.registerLocationPing(name, pos.getX(), pos.getY(), pos.getZ(), radius)) {
             sender.addChatMessage(new ChatComponentText("§aRegistered " + name + " at " + pos.getX() + ", " + pos.getY() + ", " + pos.getZ()));
         }
     }
@@ -169,7 +169,7 @@ public class locationMarkers extends CommandBase {
         EntityPlayer entity = (EntityPlayer) sender;
 
         // register the ping location
-        if (notifPlayer.registerPingLocation(args[0], entity.posX, entity.posY, entity.posZ, 3)) {
+        if (notifPlayer.registerLocationPing(args[0], entity.posX, entity.posY, entity.posZ, 3)) {
             // TODO: use chat components instead of strings
             sender.addChatMessage(new ChatComponentText("§aRegistered " + args[0] + " at " + entity.posX + ", " + entity.posY + ", " + entity.posZ));
         }
@@ -181,16 +181,18 @@ public class locationMarkers extends CommandBase {
             return;
         }
 
-        if(notifPlayer.unregisterPingLocation(args[0])) {
+        if(notifPlayer.unregisterLocationPing(args[0])) {
             if (args[0].equalsIgnoreCase("all")) {
                 notifPlayer.setLocPings(new PingVec<>());
                 sender.addChatMessage(new ChatComponentText("Unregistered all locations"));
             }
-
+            sender.addChatMessage(new ChatComponentText("Unregistered all pings"));
+        } else if (notifPlayer.unregisterChatPing(args[0])) {
             sender.addChatMessage(new ChatComponentText("Unregistered " + args[0]));
+            return;
         }
-        else
-            sender.addChatMessage(new ChatComponentText("Could not find " + args[0] + " to unregister"));
+
+        sender.addChatMessage(new ChatComponentText("Could not find " + args[0] + " to unregister"));
     }
 
     private void list(ICommandSender sender, String[] args) {

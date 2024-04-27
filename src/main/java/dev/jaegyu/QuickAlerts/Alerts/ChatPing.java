@@ -1,4 +1,4 @@
-package dev.jaegyu.QuickAlerts.ChatAlerts;
+package dev.jaegyu.QuickAlerts.Alerts;
 
 import com.google.gson.JsonObject;
 import dev.jaegyu.QuickAlerts.BasePing;
@@ -14,11 +14,19 @@ public class ChatPing extends BasePing {
     }
     public ChatPing(JsonObject json) {
         super(json);
-        this.pattern = Pattern.compile(json.get("pattern").getAsString());
+
+        JsonObject patternObject = json.get("pattern").getAsJsonObject();
+
+        this.pattern = Pattern.compile(patternObject.get("pattern").getAsString(),
+                patternObject.get("flags").getAsInt());
     }
 
-    public boolean ContainsPattern(String s) {
+    public boolean PatternIn(String s) {
         Matcher m = pattern.matcher(s);
         return m.find();
+    }
+
+    public String getPatternAsString() {
+        return pattern.pattern();
     }
 }

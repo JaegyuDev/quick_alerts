@@ -2,9 +2,10 @@ package dev.jaegyu.QuickAlerts;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonWriter;
-import dev.jaegyu.QuickAlerts.ChatAlerts.ChatPing;
-import dev.jaegyu.QuickAlerts.LocationAlerts.LocationPing;
-import dev.jaegyu.QuickAlerts.commands.locationMarkers;
+import dev.jaegyu.QuickAlerts.Alerts.ChatPing;
+import dev.jaegyu.QuickAlerts.Alerts.LocationPing;
+import dev.jaegyu.QuickAlerts.commands.chatCommands;
+import dev.jaegyu.QuickAlerts.commands.locationCommands;
 import dev.jaegyu.QuickAlerts.commands.togglePings;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -27,7 +28,8 @@ public class QuickAlerts {
         MinecraftForge.EVENT_BUS.register(notifPlayer);
         MinecraftForge.EVENT_BUS.register(this);
 
-        ClientCommandHandler.instance.registerCommand(new locationMarkers(notifPlayer));
+        ClientCommandHandler.instance.registerCommand(new locationCommands(notifPlayer));
+        ClientCommandHandler.instance.registerCommand(new chatCommands(notifPlayer));
         ClientCommandHandler.instance.registerCommand(new togglePings(notifPlayer));
 
         loadState();
@@ -72,8 +74,12 @@ public class QuickAlerts {
             QuickAlerts.notifPlayer.setPingsEnabled(json.get("pingsEnabled").getAsBoolean());
             QuickAlerts.notifPlayer.setNotifSound(new ResourceLocation(json.get("notifSound").getAsString()));
 
-            JsonArray pingLocs = json.get("pingLocs").getAsJsonArray();
-            QuickAlerts.notifPlayer.setLocPings(new PingVec<LocationPing>(pingLocs, LocationPing.class));
+            JsonArray locPings = json.get("locPings").getAsJsonArray();
+            QuickAlerts.notifPlayer.setLocPings(new PingVec<>(locPings, LocationPing.class));
+
+            JsonArray chatPings = json.get("chatPings").getAsJsonArray();
+            QuickAlerts.notifPlayer.setChatPings(new PingVec<>(chatPings, ChatPing.class));
+
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + e.getMessage());
         } catch (JsonSyntaxException e) {
@@ -102,12 +108,21 @@ public class QuickAlerts {
             writer.name("notifSound").value(notifPlayer.getNotifSound().toString());
 
             // Serialize pingLocs to a JsonArray
-            JsonArray pingLocsArray = gson.toJsonTree(notifPlayer.getLocPings()).getAsJsonArray();
+            JsonArray locPingsArray = gson.toJsonTree(notifPlayer.getLocPings()).getAsJsonArray();
 
-            // Write the JsonArray manually
-            writer.name("pingLocs");
+            writer.name("locPings");
             writer.beginArray();
-            for (JsonElement element : pingLocsArray) {
+            for (JsonElement element : locPingsArray) {
+                gson.toJson(element, writer);
+            }
+            writer.endArray();
+
+            // Serialize chatPings to a JsonArray
+            JsonArray chatPingsArray = gson.toJsonTree(notifPlayer.getChatPings()).getAsJsonArray();
+
+            writer.name("chatPings");
+            writer.beginArray();
+            for (JsonElement element : chatPingsArray) {
                 gson.toJson(element, writer);
             }
             writer.endArray();
