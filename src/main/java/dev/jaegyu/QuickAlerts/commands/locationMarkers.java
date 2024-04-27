@@ -1,9 +1,9 @@
 package dev.jaegyu.QuickAlerts.commands;
 
 import dev.jaegyu.QuickAlerts.NotifPlayer;
+import dev.jaegyu.QuickAlerts.PingVec;
 import dev.jaegyu.QuickAlerts.Utils;
 import dev.jaegyu.QuickAlerts.LocationAlerts.LocationPing;
-import dev.jaegyu.QuickAlerts.LocationAlerts.LocationPings;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;
@@ -103,7 +103,7 @@ public class locationMarkers extends CommandBase {
                     break;
 
                 case "unregister":
-                    LocationPings locations = notifPlayer.getPingLocs();
+                    PingVec<LocationPing> locations = notifPlayer.getLocPings();
                     for (LocationPing location : locations) {
                         options.add(location.getName());
                     }
@@ -183,7 +183,7 @@ public class locationMarkers extends CommandBase {
 
         if(notifPlayer.unregisterPingLocation(args[0])) {
             if (args[0].equalsIgnoreCase("all")) {
-                notifPlayer.setPingLocs(new LocationPings());
+                notifPlayer.setLocPings(new PingVec<>());
                 sender.addChatMessage(new ChatComponentText("Unregistered all locations"));
             }
 
@@ -194,7 +194,7 @@ public class locationMarkers extends CommandBase {
     }
 
     private void list(ICommandSender sender, String[] args) {
-        LocationPings locations = notifPlayer.getPingLocs();
+        PingVec<LocationPing> locations = notifPlayer.getLocPings();
         StringBuilder locationResponse = new StringBuilder();
 
         locationResponse

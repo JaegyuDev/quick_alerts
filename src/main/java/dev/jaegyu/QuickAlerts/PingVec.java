@@ -1,19 +1,26 @@
-package dev.jaegyu.QuickAlerts.LocationAlerts;
+package dev.jaegyu.QuickAlerts;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.util.Vector;
 
-public class LocationPings extends Vector<LocationPing> {
-    public LocationPings() {}
-    public LocationPings(JsonArray json) {
+public class PingVec<T extends BasePing> extends Vector<T> {
+    public PingVec() {}
+
+    public PingVec(JsonArray json, Class<T> clazz) {
         for (int i = 0; i < json.size(); i++) {
-            this.add(new LocationPing(json.get(i).getAsJsonObject()));
+            try {
+                this.add(clazz.getConstructor(JsonObject.class).newInstance(json.get(i).getAsJsonObject()));
+            } catch (Exception e) {
+                //TODO: change this lol
+                e.printStackTrace();
+            }
         }
     }
 
     public boolean containsName(String name) {
-        for (LocationPing ping : this) {
+        for (T ping : this) {
             if (ping.getName().contains(name)) {
                 return true;
             }
@@ -30,5 +37,4 @@ public class LocationPings extends Vector<LocationPing> {
         }
         return false;
     }
-
 }

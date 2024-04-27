@@ -2,9 +2,10 @@ package dev.jaegyu.QuickAlerts;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonWriter;
+import dev.jaegyu.QuickAlerts.ChatAlerts.ChatPing;
+import dev.jaegyu.QuickAlerts.LocationAlerts.LocationPing;
 import dev.jaegyu.QuickAlerts.commands.locationMarkers;
 import dev.jaegyu.QuickAlerts.commands.togglePings;
-import dev.jaegyu.QuickAlerts.LocationAlerts.LocationPings;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -72,7 +73,7 @@ public class QuickAlerts {
             QuickAlerts.notifPlayer.setNotifSound(new ResourceLocation(json.get("notifSound").getAsString()));
 
             JsonArray pingLocs = json.get("pingLocs").getAsJsonArray();
-            QuickAlerts.notifPlayer.setPingLocs(new LocationPings(pingLocs));
+            QuickAlerts.notifPlayer.setLocPings(new PingVec<LocationPing>(pingLocs, LocationPing.class));
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + e.getMessage());
         } catch (JsonSyntaxException e) {
@@ -101,7 +102,7 @@ public class QuickAlerts {
             writer.name("notifSound").value(notifPlayer.getNotifSound().toString());
 
             // Serialize pingLocs to a JsonArray
-            JsonArray pingLocsArray = gson.toJsonTree(notifPlayer.getPingLocs()).getAsJsonArray();
+            JsonArray pingLocsArray = gson.toJsonTree(notifPlayer.getLocPings()).getAsJsonArray();
 
             // Write the JsonArray manually
             writer.name("pingLocs");

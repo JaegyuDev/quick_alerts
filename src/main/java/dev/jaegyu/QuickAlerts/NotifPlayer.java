@@ -1,9 +1,6 @@
 package dev.jaegyu.QuickAlerts;
 
-import java.util.Vector;
-
 import dev.jaegyu.QuickAlerts.LocationAlerts.LocationPing;
-import dev.jaegyu.QuickAlerts.LocationAlerts.LocationPings;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -15,25 +12,25 @@ import static dev.jaegyu.QuickAlerts.QuickAlerts.saveState;
 @SuppressWarnings("SpellCheckingInspection")
 public class NotifPlayer {
     private ResourceLocation NotifSound = new ResourceLocation("note.pling");
-    public LocationPings PingLocs = new LocationPings();
+    public PingVec<LocationPing> LocPings = new PingVec<>();
     private boolean PingsEnabled = true;
 
     public boolean registerPingLocation(String name, double xPos, double yPos, double zPos, int radius) {
-        if (PingLocs.containsName(name)) {
+        if (LocPings.containsName(name)) {
             return false;
         }
 
-        if (PingLocs.contains(null)) {
-            PingLocs.set(PingLocs.indexOf(null), new LocationPing(name, xPos, yPos, zPos, radius));
+        if (LocPings.contains(null)) {
+            LocPings.set(LocPings.indexOf(null), new LocationPing(name, xPos, yPos, zPos, radius));
         } else {
-            PingLocs.add(new LocationPing(name, xPos, yPos, zPos, radius));
+            LocPings.add(new LocationPing(name, xPos, yPos, zPos, radius));
         }
 
         return true;
     }
 
     public boolean unregisterPingLocation(String name) {
-        return PingLocs.remove(name);
+        return LocPings.remove(name);
     }
 
     // This returns the new state of PingsEnabled
@@ -47,7 +44,7 @@ public class NotifPlayer {
         if(!PingsEnabled)
             return;
 
-        for (LocationPing ping : PingLocs) {
+        for (LocationPing ping : LocPings) {
             if (ping.ContainsBlock(e.player.getPosition())) {
                 e.player.playSound(NotifSound.toString(), 1.0F, 1.0F);
                 break;
@@ -71,12 +68,12 @@ public class NotifPlayer {
         NotifSound = notifSound;
     }
 
-    public LocationPings getPingLocs() {
-        return PingLocs;
+    public PingVec<LocationPing> getLocPings() {
+        return LocPings;
     }
 
-    public void setPingLocs(Vector<LocationPing> pingLocs) {
-        PingLocs = (LocationPings) pingLocs;
+    public void setLocPings(PingVec<LocationPing> locPings) {
+        LocPings = locPings;
     }
 
     public boolean isPingsEnabled() {

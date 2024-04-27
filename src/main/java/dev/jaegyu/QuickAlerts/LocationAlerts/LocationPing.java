@@ -6,8 +6,8 @@ import net.minecraft.util.BlockPos;
 
 
 public class LocationPing extends BasePing {
-    private double xPos, yPos, zPos;
-    private int radius;
+    private final double xPos, yPos, zPos;
+    private final int radius;
     public LocationPing(String name, double xPos, double yPos, double zPos, int radius) {
         super(name);
         this.xPos = xPos;
