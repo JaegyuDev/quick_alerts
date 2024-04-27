@@ -1,23 +1,23 @@
-package dev.jaegyu.QuickAlerts.location_markers;
+package dev.jaegyu.QuickAlerts.LocationAlerts;
 
 import com.google.gson.JsonObject;
+import dev.jaegyu.QuickAlerts.BasePing;
 import net.minecraft.util.BlockPos;
 
 
-public class PingLocation {
-    private String name;
+public class LocationPing extends BasePing {
     private double xPos, yPos, zPos;
     private int radius;
-    public PingLocation(String name, double xPos, double yPos, double zPos, int radius) {
-        this.name = name;
+    public LocationPing(String name, double xPos, double yPos, double zPos, int radius) {
+        super(name);
         this.xPos = xPos;
         this.yPos = yPos;
         this.zPos = zPos;
         this.radius = radius;
     }
 
-    public PingLocation(JsonObject json) {
-        this.name = json.get("name").getAsString();
+    public LocationPing(JsonObject json) {
+        super(json);
         this.xPos = json.get("xPos").getAsDouble();
         this.yPos = json.get("yPos").getAsDouble();
         this.zPos = json.get("zPos").getAsDouble();
@@ -27,10 +27,6 @@ public class PingLocation {
     // This isn't really a true radius, but more of an approximation.
     public boolean ContainsBlock(BlockPos b) {
         return b.distanceSqToCenter(xPos, yPos, zPos) <  (radius * radius);
-    }
-
-    public String getName() {
-        return name;
     }
 
 }

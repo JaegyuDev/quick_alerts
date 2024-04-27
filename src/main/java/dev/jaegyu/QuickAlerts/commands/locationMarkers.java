@@ -2,8 +2,8 @@ package dev.jaegyu.QuickAlerts.commands;
 
 import dev.jaegyu.QuickAlerts.NotifPlayer;
 import dev.jaegyu.QuickAlerts.Utils;
-import dev.jaegyu.QuickAlerts.location_markers.PingLocation;
-import dev.jaegyu.QuickAlerts.location_markers.PingLocations;
+import dev.jaegyu.QuickAlerts.LocationAlerts.LocationPing;
+import dev.jaegyu.QuickAlerts.LocationAlerts.LocationPings;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;
@@ -91,9 +91,11 @@ public class locationMarkers extends CommandBase {
                         case 4:
                             options.add(String.valueOf(pos.getY()));
                             break;
+
                         case 5:
                             options.add(String.valueOf(pos.getZ()));
                             break;
+
                         case 6:
                             options.add(String.valueOf(3));
                             break;
@@ -101,8 +103,8 @@ public class locationMarkers extends CommandBase {
                     break;
 
                 case "unregister":
-                    PingLocations locations = notifPlayer.getPingLocs();
-                    for (PingLocation location : locations) {
+                    LocationPings locations = notifPlayer.getPingLocs();
+                    for (LocationPing location : locations) {
                         options.add(location.getName());
                     }
                     break;
@@ -181,7 +183,7 @@ public class locationMarkers extends CommandBase {
 
         if(notifPlayer.unregisterPingLocation(args[0])) {
             if (args[0].equalsIgnoreCase("all")) {
-                notifPlayer.setPingLocs(new PingLocations());
+                notifPlayer.setPingLocs(new LocationPings());
                 sender.addChatMessage(new ChatComponentText("Unregistered all locations"));
             }
 
@@ -192,7 +194,7 @@ public class locationMarkers extends CommandBase {
     }
 
     private void list(ICommandSender sender, String[] args) {
-        PingLocations locations = notifPlayer.getPingLocs();
+        LocationPings locations = notifPlayer.getPingLocs();
         StringBuilder locationResponse = new StringBuilder();
 
         locationResponse
@@ -200,7 +202,7 @@ public class locationMarkers extends CommandBase {
                 .append("Location Names:\n");
 
         // Could just replace this with 2 color characters, however for now ill leave it as is.
-        for (PingLocation location : locations) {
+        for (LocationPing location : locations) {
             locationResponse
                     .append(Utils.Color.GOLD)
                     .append(" - ")

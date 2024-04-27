@@ -4,7 +4,7 @@ import com.google.gson.*;
 import com.google.gson.stream.JsonWriter;
 import dev.jaegyu.QuickAlerts.commands.locationMarkers;
 import dev.jaegyu.QuickAlerts.commands.togglePings;
-import dev.jaegyu.QuickAlerts.location_markers.PingLocations;
+import dev.jaegyu.QuickAlerts.LocationAlerts.LocationPings;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -72,7 +72,7 @@ public class QuickAlerts {
             QuickAlerts.notifPlayer.setNotifSound(new ResourceLocation(json.get("notifSound").getAsString()));
 
             JsonArray pingLocs = json.get("pingLocs").getAsJsonArray();
-            QuickAlerts.notifPlayer.setPingLocs(new PingLocations(pingLocs));
+            QuickAlerts.notifPlayer.setPingLocs(new LocationPings(pingLocs));
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + e.getMessage());
         } catch (JsonSyntaxException e) {

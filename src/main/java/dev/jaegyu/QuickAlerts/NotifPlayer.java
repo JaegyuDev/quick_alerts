@@ -2,8 +2,8 @@ package dev.jaegyu.QuickAlerts;
 
 import java.util.Vector;
 
-import dev.jaegyu.QuickAlerts.location_markers.PingLocation;
-import dev.jaegyu.QuickAlerts.location_markers.PingLocations;
+import dev.jaegyu.QuickAlerts.LocationAlerts.LocationPing;
+import dev.jaegyu.QuickAlerts.LocationAlerts.LocationPings;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -15,7 +15,7 @@ import static dev.jaegyu.QuickAlerts.QuickAlerts.saveState;
 @SuppressWarnings("SpellCheckingInspection")
 public class NotifPlayer {
     private ResourceLocation NotifSound = new ResourceLocation("note.pling");
-    public PingLocations PingLocs = new PingLocations();
+    public LocationPings PingLocs = new LocationPings();
     private boolean PingsEnabled = true;
 
     public boolean registerPingLocation(String name, double xPos, double yPos, double zPos, int radius) {
@@ -24,9 +24,9 @@ public class NotifPlayer {
         }
 
         if (PingLocs.contains(null)) {
-            PingLocs.set(PingLocs.indexOf(null), new PingLocation(name, xPos, yPos, zPos, radius));
+            PingLocs.set(PingLocs.indexOf(null), new LocationPing(name, xPos, yPos, zPos, radius));
         } else {
-            PingLocs.add(new PingLocation(name, xPos, yPos, zPos, radius));
+            PingLocs.add(new LocationPing(name, xPos, yPos, zPos, radius));
         }
 
         return true;
@@ -47,7 +47,7 @@ public class NotifPlayer {
         if(!PingsEnabled)
             return;
 
-        for (PingLocation ping : PingLocs) {
+        for (LocationPing ping : PingLocs) {
             if (ping.ContainsBlock(e.player.getPosition())) {
                 e.player.playSound(NotifSound.toString(), 1.0F, 1.0F);
                 break;
@@ -71,12 +71,12 @@ public class NotifPlayer {
         NotifSound = notifSound;
     }
 
-    public PingLocations getPingLocs() {
+    public LocationPings getPingLocs() {
         return PingLocs;
     }
 
-    public void setPingLocs(Vector<PingLocation> pingLocs) {
-        PingLocs = (PingLocations) pingLocs;
+    public void setPingLocs(Vector<LocationPing> pingLocs) {
+        PingLocs = (LocationPings) pingLocs;
     }
 
     public boolean isPingsEnabled() {

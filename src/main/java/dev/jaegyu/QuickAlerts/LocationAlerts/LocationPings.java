@@ -1,20 +1,19 @@
-package dev.jaegyu.QuickAlerts.location_markers;
+package dev.jaegyu.QuickAlerts.LocationAlerts;
 
 import com.google.gson.JsonArray;
-import dev.jaegyu.QuickAlerts.location_markers.PingLocation;
 
 import java.util.Vector;
 
-public class PingLocations extends Vector<PingLocation> {
-    public PingLocations() {}
-    public PingLocations(JsonArray json) {
+public class LocationPings extends Vector<LocationPing> {
+    public LocationPings() {}
+    public LocationPings(JsonArray json) {
         for (int i = 0; i < json.size(); i++) {
-            this.add(new PingLocation(json.get(i).getAsJsonObject()));
+            this.add(new LocationPing(json.get(i).getAsJsonObject()));
         }
     }
 
     public boolean containsName(String name) {
-        for (PingLocation ping : this) {
+        for (LocationPing ping : this) {
             if (ping.getName().contains(name)) {
                 return true;
             }
