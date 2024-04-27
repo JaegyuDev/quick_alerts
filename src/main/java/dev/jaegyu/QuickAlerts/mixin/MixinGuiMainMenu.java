@@ -1,4 +1,4 @@
-package com.github.jaegyudev.quick_alerts.mixin;
+package dev.jaegyu.QuickAlerts.mixin;
 
 import net.minecraft.client.gui.GuiMainMenu;
 import org.spongepowered.asm.mixin.Mixin;

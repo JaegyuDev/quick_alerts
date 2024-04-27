@@ -1,4 +1,4 @@
-package com.github.jaegyudev.quick_alerts.init;
+package dev.jaegyu.QuickAlerts.init;
 
 import org.spongepowered.asm.lib.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;

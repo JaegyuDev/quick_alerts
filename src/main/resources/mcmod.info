@@ -1,14 +1,14 @@
 [
   {
     "modid": "${modid}",
-    "name": "Xample Mod",
-    "description": "A mod that is used as an example.",
+    "name": "Quick Alerts",
+    "description": "Simple audio cues added to your client",
     "version": "${version}",
     "mcversion": "${mcversion}",
-    "url": "https://github.com/romangraef/Forge1.8.9Template/",
+    "url": "https://github.com/JaegyuDev/quick_alerts/",
     "updateUrl": "",
     "authorList": [
-      "You"
+      "JaegyuDev"
     ],
     "credits": "",
     "logoFile": "",
