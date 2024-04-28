@@ -46,6 +46,35 @@ public class Utils {
             return code;
         }
 
+
+        // This is also super weird imo, im not really sure if there is a better way to do this.
+        // This clears the formatting so that you're only working with the unformmated text and not
+        // the color/format characters.
+        public static String unformatString(String s) {
+            return s.replace(Utils.Color.BLACK.toString(), "")
+                    .replace(Utils.Color.DARK_BLUE.toString(), "")
+                    .replace(Utils.Color.DARK_GREEN.toString(), "")
+                    .replace(Utils.Color.DARK_AQUA.toString(), "")
+                    .replace(Utils.Color.DARK_RED.toString(), "")
+                    .replace(Utils.Color.DARK_PURPLE.toString(), "")
+                    .replace(Utils.Color.GOLD.toString(), "")
+                    .replace(Utils.Color.GRAY.toString(), "")
+                    .replace(Utils.Color.DARK_GRAY.toString(), "")
+                    .replace(Utils.Color.BLUE.toString(), "")
+                    .replace(Utils.Color.GREEN.toString(), "")
+                    .replace(Utils.Color.AQUA.toString(), "")
+                    .replace(Utils.Color.RED.toString(), "")
+                    .replace(Utils.Color.LIGHT_PURPLE.toString(), "")
+                    .replace(Utils.Color.YELLOW.toString(), "")
+                    .replace(Utils.Color.WHITE.toString(), "")
+                    .replace(Utils.Color.OBFUSCATED.toString(), "")
+                    .replace(Utils.Color.BOLD.toString(), "")
+                    .replace(Utils.Color.STRIKETHROUGH.toString(), "")
+                    .replace(Utils.Color.UNDERLINE.toString(), "")
+                    .replace(Utils.Color.ITALIC.toString(), "")
+                    .replace(Utils.Color.RESET.toString(), "");
+        }
+
         @Override
         public String toString() {
             return "§" + code;

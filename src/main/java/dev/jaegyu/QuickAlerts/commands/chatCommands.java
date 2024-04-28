@@ -1,19 +1,19 @@
 package dev.jaegyu.QuickAlerts.commands;
 
 import dev.jaegyu.QuickAlerts.Alerts.ChatPing;
-import dev.jaegyu.QuickAlerts.Alerts.LocationPing;
 import dev.jaegyu.QuickAlerts.NotifPlayer;
 import dev.jaegyu.QuickAlerts.PingVec;
 import dev.jaegyu.QuickAlerts.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.NumberInvalidException;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static dev.jaegyu.QuickAlerts.QuickAlerts.logger;
 
 public class chatCommands extends CommandBase{
     public final NotifPlayer notifPlayer;
@@ -48,6 +48,10 @@ public class chatCommands extends CommandBase{
                 register(sender, Utils.dropFirstItem(args));
                 break;
 
+            case "registerRaw":
+                registerRaw(sender, Utils.dropFirstItem(args));
+                break;
+
             case "unregister":
                 unregister(sender, Utils.dropFirstItem(args));
                 break;
@@ -69,6 +73,7 @@ public class chatCommands extends CommandBase{
 
         if (args.length == 1) {
             options.add("register");
+            options.add("registerRaw");
             options.add("unregister");
             options.add("list");
         }
@@ -78,6 +83,11 @@ public class chatCommands extends CommandBase{
             switch (subCommand) {
                 case "register":
                     // we can't auto complete here since it is a regex pattern.
+                    break;
+
+                case "registerRaw":
+                    // This is another command we can't autocomplete,
+                    // but is here for completeness.
                     break;
 
                 case "unregister":
@@ -111,8 +121,30 @@ public class chatCommands extends CommandBase{
         String name = args[0];
         String pattern = args[1];
 
-        if (notifPlayer.registerChatPing(name, pattern)) {
+        if (notifPlayer.registerChatPing(name, pattern, false)) {
             sender.addChatMessage(new ChatComponentText("§aRegistered " + name + " for " + pattern));
+        }
+    }
+
+    private void registerRaw(ICommandSender sender, String[] args) {
+        if (args.length < 2) {
+            sender.addChatMessage(new ChatComponentText(Utils.Color.RED + getCommandUsage(sender)));
+            return;
+        }
+
+        StringBuilder pattern = new StringBuilder();
+        for ( int i = 1; i < args.length; i++) {
+            pattern.append(args[i]).append(" ");
+        }
+
+        if (pattern.length() > 0) {
+            pattern.deleteCharAt(pattern.length() - 1);
+        }
+
+        String name = args[0];
+
+        if (notifPlayer.registerChatPing(name, pattern.toString().replace("\\&", "§"), true)) {
+            sender.addChatMessage(new ChatComponentText(Utils.Color.GREEN + "Registered raw " + name + " for " + pattern));
         }
     }
 

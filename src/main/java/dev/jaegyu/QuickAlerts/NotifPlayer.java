@@ -22,6 +22,7 @@ public class NotifPlayer {
 
     private final Stack<ResourceLocation> pingQueue = new Stack<>();
     private boolean PingsEnabled = true;
+    private final boolean DebugTextWithFormat = true;
 
     @SubscribeEvent
     public void tickEvent(TickEvent.PlayerTickEvent e) {
@@ -43,17 +44,17 @@ public class NotifPlayer {
 
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent e) {
-        logger.info(e.message.getFormattedText());
-        logger.info(e.message.getUnformattedText());
-        logger.info(e.message.getUnformattedTextForChat());
-        logger.info(e.message.toString());
-
         if (!PingsEnabled)
             return;
 
+        if (DebugTextWithFormat)
+            logger.info(e.message.getFormattedText());
+
         // This is really fucking hacky, and I'll definitely need to change this.
+        String unformatted_text = Utils.Color.unformatString(e.message.getFormattedText());
+
         for (ChatPing ping : chatPings) {
-            if (ping.PatternIn(e.message.toString())) {
+            if (ping.PatternIn(unformatted_text)) {
                 if (!(pingQueue.size() > 25)){
                     pingQueue.push(NotifSound);
                 }
@@ -92,14 +93,14 @@ public class NotifPlayer {
     }
 
     // pretty boilerplate, not sure how to fix it?
-    public boolean registerChatPing(String name, String pattern) {
+    public boolean registerChatPing(String name, String pattern, Boolean isRaw) {
         if(chatPings.containsName(name)) {
             return false;
         }
         if (chatPings.contains(null)) {
-            chatPings.set(chatPings.indexOf(null), new ChatPing(name, pattern));
+            chatPings.set(chatPings.indexOf(null), new ChatPing(name, pattern, isRaw));
         } else {
-            chatPings.add(new ChatPing(name, pattern));
+            chatPings.add(new ChatPing(name, pattern, isRaw));
         }
 
         return true;
