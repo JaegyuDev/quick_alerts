@@ -32,4 +32,8 @@ public class ChatPing extends BasePing {
     public String getPatternAsString() {
         return pattern.pattern();
     }
+
+    public boolean isRaw() {
+        return isRaw;
+    }
 }

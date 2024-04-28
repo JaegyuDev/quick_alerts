@@ -50,11 +50,13 @@ public class NotifPlayer {
         if (DebugTextWithFormat)
             logger.info(e.message.getFormattedText());
 
-        // This is really fucking hacky, and I'll definitely need to change this.
-        String unformatted_text = Utils.Color.unformatString(e.message.getFormattedText());
-
+        String message_text = e.message.getFormattedText();;
         for (ChatPing ping : chatPings) {
-            if (ping.PatternIn(unformatted_text)) {
+            if (!ping.isRaw())
+                message_text = Utils.Color.unformatString(message_text);
+
+            // this is still hacky. Might do a multithread rewrite/refactor.
+            if (ping.PatternIn(message_text)) {
                 if (!(pingQueue.size() > 25)){
                     pingQueue.push(NotifSound);
                 }

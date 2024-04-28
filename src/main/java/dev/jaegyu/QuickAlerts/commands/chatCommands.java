@@ -32,6 +32,8 @@ public class chatCommands extends CommandBase{
                 "Subcommands:\n" +
                 " register <name> <pattern> - registers a sound cue that will pop whenever there " +
                     "is a message in chat that matches the regex\n" +
+                " registerRaw <name> <patterm> - much like register, however you can select against" +
+                    " formatting and colors with \\&\n" +
                 " unregister <name> - unregisters the chat ping\n" +
                 " list - lists all of your registered chat pings";
     }
@@ -117,11 +119,19 @@ public class chatCommands extends CommandBase{
             return;
         }
 
+        StringBuilder pattern = new StringBuilder();
+        for ( int i = 1; i < args.length; i++) {
+            pattern.append(args[i]).append(" ");
+        }
+
+        if (pattern.length() > 0) {
+            pattern.deleteCharAt(pattern.length() - 1);
+        }
+
         // maybe there is a better way to do this?
         String name = args[0];
-        String pattern = args[1];
 
-        if (notifPlayer.registerChatPing(name, pattern, false)) {
+        if (notifPlayer.registerChatPing(name, pattern.toString(), false)) {
             sender.addChatMessage(new ChatComponentText("§aRegistered " + name + " for " + pattern));
         }
     }
